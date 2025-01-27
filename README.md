@@ -1,0 +1,1 @@
+# Repozytorium do ćwiczenia wiedzy na temat typesciptu
