@@ -1,6 +1,24 @@
 # Repozytorium do ćwiczenia wiedzy na temat TypeScript
 > TypeScript sprawdza typy zmiennych już na poziomie kompilacji, fundamentalnie na tym poziomie się różni od JavaScript, który aby sprawdzić błędy w kodzie musi najpierw przejść kompilację i uruchomienie. A TS zwróci od razu błąd na samym początku kompilacji kodu.
 
+## Spis treści
+
+## Uruchamianie przykładów
+
+Jeżeli chcemy mieć pewność, że przykłady zadziałają w poprawny sposób, zalecane jest uruchamianie ich przez komendę:
+
+```bash
+tsc przyklad.ts
+node pyrzklad.js
+```
+
+Jeżeli użyjemy komendy:
+
+```bash
+npx tsx przyklad.ts
+```
+To zostanie pomięte sprawdzanie typów i mogą się pojawić nie oczekiwane rezultaty.
+
 ## Typowanie w TypeScript
 
 ### Typy prymitywne
@@ -59,4 +77,56 @@ Tablice tak samo jak obiekty wykorzystują te same mechanizmy typowania co prymi
 Przykład tablica ma mieć tylko typ zmiennych `string`:
 ```ts
 const newArr: string[] = ["jeden", "dwa", "trzy"] // <-- zapis string[] zapewnia że tablica newArr ma w sobie jedynie elementy typu string
+```
+##### Tuples
+
+Specjalny typ tablicy jaki jest dostarczany razem z TypeScript. Jest to specjalna tablica o nie zmiennej długości danych, czyli posiada tylko duet danych.
+
+```ts
+const newTuple: [number, string] // <-- zapis [number, string] mówi kompilatorowi, że oczekujemy tylko tablicy z dwiema wartościami o typach number oraz string
+
+newTuple[34, "DOM"] // poprawny zapis
+newTuple["DOM", 34] // niepoprawny zapis zwróci błąd 
+```
+<span style="color:red"><b>UWAGA</b></span> Typ `Tuple` nie jest jednak odporny na mutację za pomocą na przykład metody **push** co spowoduje niestety na poszerzenie naszej tablicy.
+
+#### Enum - specjalny typ danych, który pozwala na definiowanie zbioru nazwanych danych
+
+Załóżmy, że tworzymy obiekt użytkownika, który ma zdefiniowane role jakie pozawlają mu na dostęp do odpowiednich funkcji systemu 
+
+```ts
+
+const user {
+    name: string,
+    login: string,
+    role: string,
+} = {
+    name: "Dominik",
+    login: "dom",
+    role: "ADMIN", // zamiast takiego nie ustandaryzowanego zapisu możemy wykorzystać typ enum
+}
+
+
+enum Role {ADMIN, USER, AUTHOR};
+
+const user2 {
+    name: "Andrzej",
+    login: "and",
+    role: Role.USER,
+}
+
+```
+
+Typ `enum` reprezentuje specjalny zestaw typów danych, który jest określany za pomocą słów czytelnych dla człowieka jak na przykład `"ADMIN, USER, AUTHOR"` każde słowo określa inną wartość, domyślne jeżeli nie określimy inaczek to wartość tych słów jest tumaczona na INT od liczby 0 ... n.
+
+#### Literal
+
+Jest to określenie typu danych który przyjmuje konkretną wartość, ta wartość musi być stała i nie zmienna przez cały okres działania aplikacji.
+
+Przykład:
+
+```ts
+
+const IMPORTANT_VAR = 5; //literał okreslający zmienną IMPORTANT_VAR, że posiada tylko i wyłącznie liczbę 5 jako wartość i nie jest ona podawana, żadnej modyfikacji
+
 ```
