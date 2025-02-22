@@ -136,6 +136,34 @@ const IMPORTANT_VAR = 5; //literał okreslający zmienną IMPORTANT_VAR, że pos
 
 ### Funkcje
 
+Funkcje w TS również przyjmują typy, ale w typ funkcji oznacza jaką wartość ma zamiar zwrócić o ile w ogóle funkcja ma zamiar zwracać jakąkolwiek wartość.
+
+```ts
+function stringValue(value: string): string {
+  return value;
+} // funkcja o typie string ponieważ zwraca wartość typu string itd.
+
+function executeCallback(callback: () => void): void {
+  callback();
+} // funkcja o typie void, ponieważ funckja executeCallback nie zwraca przekazanej do niej funkcji, a tylko ją wykonuje
+// chociaż funckja callback jest również zamknięta na możliwość zwrócenia wartości bo jest typu void
+```
+
+Ciekawymi typami są typy:
+
+- any
+- unknown
+- void
+- never
+
+Typ `any` jest specjalnym typem ponieważ jego użycie wyłącza nam dobrodziejstwa TS, wartości czy nawet funkcje o takim typie nie są sprawdzane przez kompilator pod względem błędów typowania, dlatego nie zaleca się ich nadużywać.
+
+Typ `unknown` z zasady działania przypomina typ `any` pomimo podobieństwa to typ `unknown` nie daje nam wolnej ręki przy mieszaniu typów, jeżeli będziemy chcieli przypisać bez walidacji typ `unknown` do zmiennej zdeklarowanej jako dany typ na przykład `number` to TS na poziomie kompilacji powiadomi nas o błędzie. Bo nie będzie mieć pewności co kryje się pod typem `unknown`
+
+Typ `void` jest to specjalny typ stosowany w funkcjach określający funkcje, które nie zwracają żadnej wartości.
+
+Typ `never` jest typem, który podobnie jak typ `void` niczego nie zwraca ale typ `never` nie zwraca niczego ostatecznie, prowadząc do zatrzymania wykonywania dotychczasowych operacji, zazwyczaj ten typ jest wykorzystywany do tworzenia funckji zwracających krytyczne błędy i mające za zadanie zatrzymanie aplikacji gdy taki błąd nastanie.
+
 ### Typy odmienne
 
 #### Any
