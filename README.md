@@ -21,6 +21,22 @@ npx tsx przyklad.ts
 
 To zostanie pomięte sprawdzanie typów i mogą się pojawić nie oczekiwane rezultaty.
 
+## Konfigurowanie TS dla większych aplikacji
+
+Aby móc skopilować aplikację, która zawiera więcej plików TS niż jeden, to zamiast używać dla każdego pliku komendy:
+
+```bash
+tsc nazwa_pliku.ts
+```
+
+Możemy wykorzystać do storzenia całego projektu komendę:
+
+```bash
+tsc --init
+```
+
+Wykorzystanie tej komendy wygeneruje nam plik `tsconfig.json` co daje nam mase opcji jak kompilator, kod, czy wykrywanie plików ma działać.
+
 ## Typowanie w TypeScript
 
 ### Typy prymitywne
@@ -167,6 +183,29 @@ Typ `never` jest typem, który podobnie jak typ `void` niczego nie zwraca ale ty
 ### Typy odmienne
 
 #### Any
+
+Typ `any` jest typem, który przyjmuje wszystkie wartości jako poprawne.
+TS nie przyczepi się kiedy będziemy żąnglować przypisanymi wartościami do zmiennej o typie `any` ponieważ do jej działania wszystkie typy są dopuszczone.
+
+> Typ `any` jest bardzo elastyczny, ale ze względu na to, że TS nie sprawdza jakie typy danych znajdują się pod zmienną o type `any` **NIE POWINIŚMY TEGO TYPU NADUŻYWAĆ** ponieważ tracimy panowanie nad aplikacją oraz nie możemy korzystać funkcji które dostarcza nam TS takich jak sprawdzanie błędów typowania.
+
+```ts
+let anyVar: any = 'Dominik';
+anyVar = 20;
+
+const stringArr = ['Dominik', 'Tomek', 'Mateusz'];
+
+anyVar = stringArr;
+
+const person = {
+  name: 'Dominik',
+  age: 25,
+};
+
+anyVar = person;
+```
+
+Wszystkie powyższe operacjie są dozwolone dla typu `any` ponieważ TS nie sprawdzi, czy takie operacje są dozwolone albo logiczne.
 
 #### Unknown
 
