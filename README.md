@@ -243,3 +243,30 @@ while (true) {
 
 // ponieważ jeżeli na niej nie wymusimy return to nigdy nic nie zwroci
 ```
+
+### Klasy i obiekty
+
+> Obiekty są nie rozerwalnymi elementami klas, ponieważ na podstawie klasy powstają nowe instancje obiektów na podstawie wzoru jaki dostaraczają klasy.
+
+#### Działanie klasy
+
+Klasy są specjalnymi instancjami pozwalającymi na szybsze i sprawsniejsze tworzenie takich samych obiektów, posiadających identyczną strukturę oraz identyczne zastosowanie, ale mogą przechowywać różne wartości. Oczywiście w ramach udostępnionych własności poprzez klasę.
+
+> Klasę można nazwać schematem dzięki, któremu buduje się obiekty
+
+Klasy posiadają wewanątrz siebie specjalną metodę `constructor` która jest uruchamiana podczas tworzenia nowej instacji klasy, czyli nowego obiektu na podstawie klasy.
+
+```ts
+class SimpleClass {
+  name: string; // własność klasy name, która będzie występować w każdym obiekcie jaki powstanie na podstawie klasy SimpleClass
+
+  constructor(name: string) {
+    // konstuktor, specjalna metoda klasy gwarantująca, że wartości jakie zostaną w zdeklarowane powstaną podczas tworzenia obiektu.
+    this.name = name;
+  }
+}
+
+const element = new SimpleClass('Układanki'); // przypisanie powstałej instacji klasy (obiektu) do zmiennej element oraz nadanie jej właściwości name wartość "Układanki"
+
+element.name; // dostanie się właściwości name obiektu element
+```
