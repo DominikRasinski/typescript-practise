@@ -275,4 +275,10 @@ element.name; // dostanie się właściwości name obiektu element
 
 `public` - modyfikator `public` jest modyfikatorem, który możemy nadać na każdą zmienną, metodę która jest zdeklarowana wewnątrz klasy ustawia jako dostępną dla każdego po notacji `klasa.metoda`.
 
-`private` - modyfikatator `private` jest modyfikatorem, który nie pozwala na swobodny dostęp do włąsności klasy, tylko włąsności wenwątrz klasy mają dostęp do zmiennych, metod oznaczonych tym modyfikatorem
+`private` - modyfikatator `private` jest modyfikatorem, który nie pozwala na swobodny dostęp do włąsności klasy, tylko włąsności wenwątrz klasy mają dostęp do zmiennych, metod oznaczonych tym modyfikatorem.
+
+<!-- TODO opisać do końca modyfikatory -->
+
+`protect`
+
+`readonly`
