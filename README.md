@@ -69,8 +69,8 @@ Przykład zapisania obiektu, który przyjmuje typ na podstawie definicji własno
 
 ```ts
 const person = {
-  name: 'Dominik',
-  age: 25,
+   name: 'Dominik',
+   age: 25,
 };
 ```
 
@@ -78,13 +78,13 @@ Przykład zapisania obiektu za pomocą jawnego o typowania
 
 ```ts
 const person2: {
-  // definiowanie typu danych jaki oczekujemy, że nowa instancja obiektu dostanie
-  name: string;
-  age: number;
+   // definiowanie typu danych jaki oczekujemy, że nowa instancja obiektu dostanie
+   name: string;
+   age: number;
 } = {
-  // moment kiedy definiujemy obiekt i jego własności
-  name: 'Dominik',
-  age: 25,
+   // moment kiedy definiujemy obiekt i jego własności
+   name: 'Dominik',
+   age: 25,
 };
 ```
 
@@ -156,21 +156,21 @@ Funkcje w TS również przyjmują typy, ale w typ funkcji oznacza jaką wartoś�
 
 ```ts
 function stringValue(value: string): string {
-  return value;
+   return value;
 } // funkcja o typie string ponieważ zwraca wartość typu string itd.
 
 function executeCallback(callback: () => void): void {
-  callback();
+   callback();
 } // funkcja o typie void, ponieważ funckja executeCallback nie zwraca przekazanej do niej funkcji, a tylko ją wykonuje
 // chociaż funckja callback jest również zamknięta na możliwość zwrócenia wartości bo jest typu void
 ```
 
 Ciekawymi typami są typy:
 
-- any
-- unknown
-- void
-- never
+-  any
+-  unknown
+-  void
+-  never
 
 Typ `any` jest specjalnym typem ponieważ jego użycie wyłącza nam dobrodziejstwa TS, wartości czy nawet funkcje o takim typie nie są sprawdzane przez kompilator pod względem błędów typowania, dlatego nie zaleca się ich nadużywać.
 
@@ -198,8 +198,8 @@ const stringArr = ['Dominik', 'Tomek', 'Mateusz'];
 anyVar = stringArr;
 
 const person = {
-  name: 'Dominik',
-  age: 25,
+   name: 'Dominik',
+   age: 25,
 };
 
 anyVar = person;
@@ -232,13 +232,13 @@ Typ `never` jest praktycznie niczym i określa zazwyczaj funkcje, które nic nie
 
 ```ts
 function criticalError(message: string, code: number): never {
-  throw { message: message, errorCode: code };
+   throw { message: message, errorCode: code };
 } // customowa funkcja pozwalająca na zwrócenie błedu jaki sami zdefiniujemy, throw zatrzyma działanie skryptu błąd nie został przekazany dalej do systemu. Dlatego, że funkcja nie zwraca niczego i pozwala na dalsze działanie programu to jej typ jest never
 
 // kolejnym przykładem never jest nieskończona pętla
 
 while (true) {
-  // ...
+   // ...
 }
 
 // ponieważ jeżeli na niej nie wymusimy return to nigdy nic nie zwroci
@@ -258,12 +258,12 @@ Klasy posiadają wewanątrz siebie specjalną metodę `constructor` która jest 
 
 ```ts
 class SimpleClass {
-  name: string; // własność klasy name, która będzie występować w każdym obiekcie jaki powstanie na podstawie klasy SimpleClass
+   name: string; // własność klasy name, która będzie występować w każdym obiekcie jaki powstanie na podstawie klasy SimpleClass
 
-  constructor(name: string) {
-    // konstuktor, specjalna metoda klasy gwarantująca, że wartości jakie zostaną w zdeklarowane powstaną podczas tworzenia obiektu.
-    this.name = name;
-  }
+   constructor(name: string) {
+      // konstuktor, specjalna metoda klasy gwarantująca, że wartości jakie zostaną w zdeklarowane powstaną podczas tworzenia obiektu.
+      this.name = name;
+   }
 }
 
 const element = new SimpleClass('Układanki'); // przypisanie powstałej instacji klasy (obiektu) do zmiennej element oraz nadanie jej właściwości name wartość "Układanki"
@@ -277,8 +277,38 @@ element.name; // dostanie się właściwości name obiektu element
 
 `private` - modyfikatator `private` jest modyfikatorem, który nie pozwala na swobodny dostęp do włąsności klasy, tylko włąsności wenwątrz klasy mają dostęp do zmiennych, metod oznaczonych tym modyfikatorem.
 
-<!-- TODO opisać do końca modyfikatory -->
+Właściwości oznaczone modyfikatorem `private` nie mogą zostać odziedziczone, przez inne klasy.
 
-`protect`
+`protect` - modyfikator `protect` jest modyfikatorem pozwalającym na zabezpieczenie naszych właściwości w klasie aby nie były dostępne publicze, ale aby były możliwe do odziedziczenia przez inne klasy
 
-`readonly`
+`readonly` - modyfikator mówiący sam za siebie, określenie właściwości modyfikatorem `readonly` zabezpieczy nam włąsciwość i nie pozwoli jej nadpisać
+
+#### Dziedziczenie
+
+Dziedziczenie jest to podstawowa funckja w `OOP` pozwalająca, na ograniczenie pisania repetywnego kodu, jeżeli posiadamy już logikę w jednej klasie to możemy ją odziedziczyć do kolejnej klasy i korzystać z logiki już przygotowanej.
+
+```ts
+class PoliceStation {
+   name: string;
+
+   constructor(name: string) {
+      this.name = name;
+   }
+}
+
+class DetectiveStation extends PoliceStation {}
+```
+
+Klasa dziedzicząca, również może skorzystać z swojego własnego konstruktora, jak i mieć swoje odrębne metody, właściwości.
+Aby klasa dziedzicząca posiadała swoje włąściwości oraz mogła korzystać z włąściwości klasy dziedziczonej to w kontrukruktorze musi zostać dodane słowo `super` pozwalające nas sworzenie właściwości w obrębie klasy.
+
+```ts
+class DetectiveStation extends PoliceStation {
+   case: string;
+
+   constructor(name) {
+    super(name); //uruchowienie konstruktora dziedziczonej klasy
+    this.case = case;
+   }
+}
+```
