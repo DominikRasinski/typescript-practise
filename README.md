@@ -4,6 +4,30 @@
 
 ## Spis treści
 
+- [Repozytorium do ćwiczenia wiedzy na temat TypeScript](#repozytorium-do-ćwiczenia-wiedzy-na-temat-typescript)
+  - [Spis treści](#spis-treści)
+  - [Uruchamianie przykładów](#uruchamianie-przykładów)
+  - [Konfigurowanie TS dla większych aplikacji](#konfigurowanie-ts-dla-większych-aplikacji)
+  - [Typowanie w TypeScript](#typowanie-w-typescript)
+    - [Typy prymitywne](#typy-prymitywne)
+    - [Typy zaawansowane](#typy-zaawansowane)
+      - [Obiekty](#obiekty)
+      - [Tablice](#tablice)
+        - [Tuples](#tuples)
+      - [Enum - specjalny typ danych, który pozwala na definiowanie zbioru nazwanych danych](#enum---specjalny-typ-danych-który-pozwala-na-definiowanie-zbioru-nazwanych-danych)
+      - [Literal](#literal)
+    - [Funkcje](#funkcje)
+    - [Typy odmienne](#typy-odmienne)
+      - [Any](#any)
+      - [Unknown](#unknown)
+      - [Never](#never)
+  - [Klasy i obiekty](#klasy-i-obiekty)
+      - [Działanie klasy](#działanie-klasy)
+      - [Modyfikatory](#modyfikatory)
+      - [Dziedziczenie](#dziedziczenie)
+      - [Getters \& Setters](#getters--setters)
+      - [Modyfikator `static`](#modyfikator-static)
+
 ## Uruchamianie przykładów
 
 Jeżeli chcemy mieć pewność, że przykłady zadziałają w poprawny sposób, zalecane jest uruchamianie ich przez komendę:
@@ -152,7 +176,7 @@ const IMPORTANT_VAR = 5; //literał okreslający zmienną IMPORTANT_VAR, że pos
 
 ### Funkcje
 
-Funkcje w TS również przyjmują typy, ale w typ funkcji oznacza jaką wartość ma zamiar zwrócić o ile w ogóle funkcja ma zamiar zwracać jakąkolwiek wartość.
+Funkcje w TS również przyjmują typy, ale typ w funkcji oznacza jaką wartość ma zamiar zwrócić o ile w ogóle funkcja ma zamiar zwracać jakąkolwiek wartość.
 
 ```ts
 function stringValue(value: string): string {
@@ -244,7 +268,7 @@ while (true) {
 // ponieważ jeżeli na niej nie wymusimy return to nigdy nic nie zwroci
 ```
 
-### Klasy i obiekty
+## Klasy i obiekty
 
 > Obiekty są nie rozerwalnymi elementami klas, ponieważ na podstawie klasy powstają nowe instancje obiektów na podstawie wzoru jaki dostaraczają klasy.
 
@@ -309,6 +333,58 @@ class DetectiveStation extends PoliceStation {
    constructor(name) {
     super(name); //uruchowienie konstruktora dziedziczonej klasy
     this.case = case;
+   }
+}
+```
+
+#### Getters & Setters
+
+`get` - metoda `get` pozwala na pobranie wartości z włąściwości klasy, która jest zadeklarowana jako `private` lub `protected` oraz pozwala na manipulację wartością przed zwróceniem jej.
+
+`set` - metoda `set` pozwala na przypisanie wartości do włąściwości klasy, która jest zadeklarowana jako `private` lub `protected` oraz pozwala na manipulację wartością przed przypisaniem jej.
+
+```ts
+class DetectiveStation extends PoliceStation {
+   private _case: string;
+
+   constructor(name) {
+    super(name);
+   }
+ 
+   get case() {
+      return this._case;
+   }
+
+   set case(value: string) {
+      if (value.length < 3) {
+         throw new Error('Za krótki opis sprawy');
+      }
+      this._case = value;
+   }
+}
+```
+
+#### Modyfikator `static`
+
+Modyfikator statyczny pozwala na dostęp do metody, właściwości klasy bez konieczności tworzenia instancji klasy.
+
+```ts
+class DetectiveStation extends PoliceStation {
+   private static _case: string;
+
+   constructor(name) {
+    super(name);
+   }
+ 
+   static get case() {
+      return DetectiveStation._case;
+   }
+
+   static set case(value: string) {
+      if (value.length < 3) {
+         throw new Error('Za krótki opis sprawy');
+      }
+      DetectiveStation._case = value;
    }
 }
 ```

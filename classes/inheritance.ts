@@ -9,8 +9,9 @@ class PoliceStation {
 class DetectiveStation extends PoliceStation {
    private detectiveCases: string[];
 
-   constructor(name) {
+   constructor(name: string) {
       super(name);
+      this.detectiveCases = [];
    }
 
    addNewCase(caseName: string) {

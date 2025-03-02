@@ -22,7 +22,9 @@ var PoliceStation = /** @class */ (function () {
 var DetectiveStation = /** @class */ (function (_super) {
     __extends(DetectiveStation, _super);
     function DetectiveStation(name) {
-        return _super.call(this, name) || this;
+        var _this = _super.call(this, name) || this;
+        _this.detectiveCases = [];
+        return _this;
     }
     DetectiveStation.prototype.addNewCase = function (caseName) {
         return this.detectiveCases.push(caseName);
