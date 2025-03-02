@@ -301,6 +301,8 @@ element.name; // dostanie się właściwości name obiektu element
 
 `private` - modyfikatator `private` jest modyfikatorem, który nie pozwala na swobodny dostęp do włąsności klasy, tylko włąsności wenwątrz klasy mają dostęp do zmiennych, metod oznaczonych tym modyfikatorem.
 
+Przy tworzeniu właściwości wraz z modyfikatorem `private` jest wymagane zdefiniowanie jej wartości jako pustej. Aby nie było wymagane przypisanie wartości do włąściwości w konstruktorze klasy dzięki czemu będziemy mieć pewność że zmienna jest prywatna.
+
 Właściwości oznaczone modyfikatorem `private` nie mogą zostać odziedziczone, przez inne klasy.
 
 `protect` - modyfikator `protect` jest modyfikatorem pozwalającym na zabezpieczenie naszych właściwości w klasie aby nie były dostępne publicze, ale aby były możliwe do odziedziczenia przez inne klasy
