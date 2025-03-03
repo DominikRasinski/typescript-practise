@@ -2,9 +2,13 @@
 
 > TypeScript sprawdza typy zmiennych już na poziomie kompilacji, fundamentalnie na tym poziomie się różni od JavaScript, który aby sprawdzić błędy w kodzie musi najpierw przejść kompilację i uruchomienie. A TS zwróci od razu błąd na samym początku kompilacji kodu.
 
+## Słownik
+`Singleton` - wzorzec projektowy, który opiera się na założeniu, że klasa może mieć tylko jeden obiekt, który jest dostępny globalnie w całej aplikacji.
+
 ## Spis treści
 
 - [Repozytorium do ćwiczenia wiedzy na temat TypeScript](#repozytorium-do-ćwiczenia-wiedzy-na-temat-typescript)
+  - [Słownik](#słownik)
   - [Spis treści](#spis-treści)
   - [Uruchamianie przykładów](#uruchamianie-przykładów)
   - [Konfigurowanie TS dla większych aplikacji](#konfigurowanie-ts-dla-większych-aplikacji)
@@ -27,6 +31,8 @@
       - [Dziedziczenie](#dziedziczenie)
       - [Getters \& Setters](#getters--setters)
       - [Modyfikator `static`](#modyfikator-static)
+      - [Modyfikator `abstract`](#modyfikator-abstract)
+      - [Singleton \& Private Constructor](#singleton--private-constructor)
 
 ## Uruchamianie przykładów
 
@@ -47,13 +53,13 @@ To zostanie pomięte sprawdzanie typów i mogą się pojawić nie oczekiwane rez
 
 ## Konfigurowanie TS dla większych aplikacji
 
-Aby móc skopilować aplikację, która zawiera więcej plików TS niż jeden, to zamiast używać dla każdego pliku komendy:
+Aby móc skompilować aplikację, która zawiera więcej plików TS niż jeden, to zamiast używać dla każdego pliku komendy:
 
 ```bash
 tsc nazwa_pliku.ts
 ```
 
-Możemy wykorzystać do storzenia całego projektu komendę:
+Możemy wykorzystać do stworzenia całego projektu komendę:
 
 ```bash
 tsc --init
@@ -137,7 +143,7 @@ newTuple[('DOM', 34)]; // niepoprawny zapis zwróci błąd
 
 #### Enum - specjalny typ danych, który pozwala na definiowanie zbioru nazwanych danych
 
-Załóżmy, że tworzymy obiekt użytkownika, który ma zdefiniowane role jakie pozawlają mu na dostęp do odpowiednich funkcji systemu
+Załóżmy, że tworzymy obiekt użytkownika, który ma zdefiniowane role jakie pozwalają mu na dostęp do odpowiednich funkcji systemu
 
 ```ts
 
@@ -148,7 +154,7 @@ const user {
 } = {
     name: "Dominik",
     login: "dom",
-    role: "ADMIN", // zamiast takiego nie ustandaryzowanego zapisu możemy wykorzystać typ enum
+    role: "ADMIN", // zamiast takiego nie standardowego zapisu możemy wykorzystać typ enum
 }
 
 
@@ -162,7 +168,7 @@ const user2 {
 
 ```
 
-Typ `enum` reprezentuje specjalny zestaw typów danych, który jest określany za pomocą słów czytelnych dla człowieka jak na przykład `"ADMIN, USER, AUTHOR"` każde słowo określa inną wartość, domyślne jeżeli nie określimy inaczek to wartość tych słów jest tumaczona na INT od liczby 0 ... n.
+Typ `enum` reprezentuje specjalny zestaw typów danych, który jest określany za pomocą słów czytelnych dla człowieka jak na przykład `"ADMIN, USER, AUTHOR"` każde słowo określa inną wartość, domyślne jeżeli nie określimy inaczej to wartość tych słów jest tłumaczona na INT od liczby 0 ... n.
 
 #### Literal
 
@@ -171,7 +177,7 @@ Jest to określenie typu danych który przyjmuje konkretną wartość, ta warto�
 Przykład:
 
 ```ts
-const IMPORTANT_VAR = 5; //literał okreslający zmienną IMPORTANT_VAR, że posiada tylko i wyłącznie liczbę 5 jako wartość i nie jest ona podawana, żadnej modyfikacji
+const IMPORTANT_VAR = 5; //literał określający zmienną IMPORTANT_VAR, że posiada tylko i wyłącznie liczbę 5 jako wartość i nie jest ona podawana, żadnej modyfikacji
 ```
 
 ### Funkcje
@@ -185,8 +191,8 @@ function stringValue(value: string): string {
 
 function executeCallback(callback: () => void): void {
    callback();
-} // funkcja o typie void, ponieważ funckja executeCallback nie zwraca przekazanej do niej funkcji, a tylko ją wykonuje
-// chociaż funckja callback jest również zamknięta na możliwość zwrócenia wartości bo jest typu void
+} // funkcja o typie void, ponieważ funkcja executeCallback nie zwraca przekazanej do niej funkcji, a tylko ją wykonuje
+// chociaż funkcja callback jest również zamknięta na możliwość zwrócenia wartości bo jest typu void
 ```
 
 Ciekawymi typami są typy:
@@ -202,16 +208,16 @@ Typ `unknown` z zasady działania przypomina typ `any` pomimo podobieństwa to t
 
 Typ `void` jest to specjalny typ stosowany w funkcjach określający funkcje, które nie zwracają żadnej wartości.
 
-Typ `never` jest typem, który podobnie jak typ `void` niczego nie zwraca ale typ `never` nie zwraca niczego ostatecznie, prowadząc do zatrzymania wykonywania dotychczasowych operacji, zazwyczaj ten typ jest wykorzystywany do tworzenia funckji zwracających krytyczne błędy i mające za zadanie zatrzymanie aplikacji gdy taki błąd nastanie.
+Typ `never` jest typem, który podobnie jak typ `void` niczego nie zwraca ale typ `never` nie zwraca niczego ostatecznie, prowadząc do zatrzymania wykonywania dotychczasowych operacji, zazwyczaj ten typ jest wykorzystywany do tworzenia funkcji zwracających krytyczne błędy i mające za zadanie zatrzymanie aplikacji gdy taki błąd nastanie.
 
 ### Typy odmienne
 
 #### Any
 
 Typ `any` jest typem, który przyjmuje wszystkie wartości jako poprawne.
-TS nie przyczepi się kiedy będziemy żąnglować przypisanymi wartościami do zmiennej o typie `any` ponieważ do jej działania wszystkie typy są dopuszczone.
+TS nie przyczepi się kiedy będziemy żonglować przypisanymi wartościami do zmiennej o typie `any` ponieważ do jej działania wszystkie typy są dopuszczone.
 
-> Typ `any` jest bardzo elastyczny, ale ze względu na to, że TS nie sprawdza jakie typy danych znajdują się pod zmienną o type `any` **NIE POWINIŚMY TEGO TYPU NADUŻYWAĆ** ponieważ tracimy panowanie nad aplikacją oraz nie możemy korzystać funkcji które dostarcza nam TS takich jak sprawdzanie błędów typowania.
+> Typ `any` jest bardzo elastyczny, ale ze względu na to, że TS nie sprawdza jakie typy danych znajdują się pod zmienną o type `any` **NIE POWINNIŚMY TEGO TYPU NADUŻYWAĆ** ponieważ tracimy panowanie nad aplikacją oraz nie możemy korzystać funkcji które dostarcza nam TS takich jak sprawdzanie błędów typowania.
 
 ```ts
 let anyVar: any = 'Dominik';
@@ -229,7 +235,7 @@ const person = {
 anyVar = person;
 ```
 
-Wszystkie powyższe operacjie są dozwolone dla typu `any` ponieważ TS nie sprawdzi, czy takie operacje są dozwolone albo logiczne.
+Wszystkie powyższe operacje są dozwolone dla typu `any` ponieważ TS nie sprawdzi, czy takie operacje są dozwolone albo logiczne.
 
 #### Unknown
 
@@ -245,12 +251,12 @@ userInput = 'Dominik';
 
 let value: string;
 
-value = useInput; // <-- w tym momencie TS zwróci błąd, ponieważ określając zmienną "unknown" to nie mamy pewności jakie dane zostną zwrócone, a w zmiennej value oczekujemy strikte danych typu "string"
+value = useInput; // <-- w tym momencie TS zwróci błąd, ponieważ określając zmienną "unknown" to nie mamy pewności jakie dane zostaną zwrócone, a w zmiennej value oczekujemy strikte danych typu "string"
 ```
 
 #### Never
 
-Typ `never` jest dosyć specyficznym typem ponieważ określa pustkę podobnie jak typ `void` ale typ `void` może zwrócić coś i pozwala na konynuowanie programu.
+Typ `never` jest dosyć specyficznym typem ponieważ określa pustkę podobnie jak typ `void` ale typ `void` może zwrócić coś i pozwala na kontynuowanie programu.
 
 Typ `never` jest praktycznie niczym i określa zazwyczaj funkcje, które nic nie zwracają oraz zatrzymują działanie kodu
 
@@ -270,27 +276,27 @@ while (true) {
 
 ## Klasy i obiekty
 
-> Obiekty są nie rozerwalnymi elementami klas, ponieważ na podstawie klasy powstają nowe instancje obiektów na podstawie wzoru jaki dostaraczają klasy.
+> Obiekty są nie rozerwalnymi elementami klas, ponieważ na podstawie klasy powstają nowe instancje obiektów na podstawie wzoru jaki dostarczają klasy.
 
 #### Działanie klasy
 
-Klasy są specjalnymi instancjami pozwalającymi na szybsze i sprawsniejsze tworzenie takich samych obiektów, posiadających identyczną strukturę oraz identyczne zastosowanie, ale mogą przechowywać różne wartości. Oczywiście w ramach udostępnionych własności poprzez klasę.
+Klasy są specjalnymi instancjami pozwalającymi na szybsze i sprawniejsze tworzenie takich samych obiektów, posiadających identyczną strukturę oraz identyczne zastosowanie, ale mogą przechowywać różne wartości. Oczywiście w ramach udostępnionych własności poprzez klasę.
 
 > Klasę można nazwać schematem dzięki, któremu buduje się obiekty
 
-Klasy posiadają wewanątrz siebie specjalną metodę `constructor` która jest uruchamiana podczas tworzenia nowej instacji klasy, czyli nowego obiektu na podstawie klasy.
+Klasy posiadają wewnątrz siebie specjalną metodę `constructor` która jest uruchamiana podczas tworzenia nowej instancji klasy, czyli nowego obiektu na podstawie klasy.
 
 ```ts
 class SimpleClass {
    name: string; // własność klasy name, która będzie występować w każdym obiekcie jaki powstanie na podstawie klasy SimpleClass
 
    constructor(name: string) {
-      // konstuktor, specjalna metoda klasy gwarantująca, że wartości jakie zostaną w zdeklarowane powstaną podczas tworzenia obiektu.
+      // konstruktor, specjalna metoda klasy gwarantująca, że wartości jakie zostaną w zdeklarowane powstaną podczas tworzenia obiektu.
       this.name = name;
    }
 }
 
-const element = new SimpleClass('Układanki'); // przypisanie powstałej instacji klasy (obiektu) do zmiennej element oraz nadanie jej właściwości name wartość "Układanki"
+const element = new SimpleClass('Układanki'); // przypisanie powstałej instancji klasy (obiektu) do zmiennej element oraz nadanie jej właściwości name wartość "Układanki"
 
 element.name; // dostanie się właściwości name obiektu element
 ```
@@ -299,19 +305,19 @@ element.name; // dostanie się właściwości name obiektu element
 
 `public` - modyfikator `public` jest modyfikatorem, który możemy nadać na każdą zmienną, metodę która jest zdeklarowana wewnątrz klasy ustawia jako dostępną dla każdego po notacji `klasa.metoda`.
 
-`private` - modyfikatator `private` jest modyfikatorem, który nie pozwala na swobodny dostęp do włąsności klasy, tylko włąsności wenwątrz klasy mają dostęp do zmiennych, metod oznaczonych tym modyfikatorem.
+`private` - modyfikator `private` jest modyfikatorem, który nie pozwala na swobodny dostęp do własności klasy, tylko własności wewnątrz klasy mają dostęp do zmiennych, metod oznaczonych tym modyfikatorem.
 
-Przy tworzeniu właściwości wraz z modyfikatorem `private` jest wymagane zdefiniowanie jej wartości jako pustej. Aby nie było wymagane przypisanie wartości do włąściwości w konstruktorze klasy dzięki czemu będziemy mieć pewność że zmienna jest prywatna.
+Przy tworzeniu właściwości wraz z modyfikatorem `private` jest wymagane zdefiniowanie jej wartości jako pustej. Aby nie było wymagane przypisanie wartości do właściwości w konstruktorze klasy dzięki czemu będziemy mieć pewność że zmienna jest prywatna.
 
 Właściwości oznaczone modyfikatorem `private` nie mogą zostać odziedziczone, przez inne klasy.
 
-`protect` - modyfikator `protect` jest modyfikatorem pozwalającym na zabezpieczenie naszych właściwości w klasie aby nie były dostępne publicze, ale aby były możliwe do odziedziczenia przez inne klasy
+`protect` - modyfikator `protect` jest modyfikatorem pozwalającym na zabezpieczenie naszych właściwości w klasie aby nie były dostępne publicznie, ale aby były możliwe do odziedziczenia przez inne klasy
 
-`readonly` - modyfikator mówiący sam za siebie, określenie właściwości modyfikatorem `readonly` zabezpieczy nam włąsciwość i nie pozwoli jej nadpisać
+`readonly` - modyfikator mówiący sam za siebie, określenie właściwości modyfikatorem `readonly` zabezpieczy nam właściwość i nie pozwoli jej nadpisać
 
 #### Dziedziczenie
 
-Dziedziczenie jest to podstawowa funckja w `OOP` pozwalająca, na ograniczenie pisania repetywnego kodu, jeżeli posiadamy już logikę w jednej klasie to możemy ją odziedziczyć do kolejnej klasy i korzystać z logiki już przygotowanej.
+Dziedziczenie jest to podstawowa funkcja w `OOP` pozwalająca, na ograniczenie pisania repetywnego kodu, jeżeli posiadamy już logikę w jednej klasie to możemy ją odziedziczyć do kolejnej klasy i korzystać z logiki już przygotowanej.
 
 ```ts
 class PoliceStation {
@@ -326,14 +332,14 @@ class DetectiveStation extends PoliceStation {}
 ```
 
 Klasa dziedzicząca, również może skorzystać z swojego własnego konstruktora, jak i mieć swoje odrębne metody, właściwości.
-Aby klasa dziedzicząca posiadała swoje włąściwości oraz mogła korzystać z włąściwości klasy dziedziczonej to w kontrukruktorze musi zostać dodane słowo `super` pozwalające nas sworzenie właściwości w obrębie klasy.
+Aby klasa dziedzicząca posiadała swoje właściwości oraz mogła korzystać z właściwości klasy dziedziczonej to w konstruktorze musi zostać dodane słowo `super` pozwalające nas stworzenie właściwości w obrębie klasy.
 
 ```ts
 class DetectiveStation extends PoliceStation {
    case: string;
 
    constructor(name) {
-    super(name); //uruchowienie konstruktora dziedziczonej klasy
+    super(name); //uruchomienie konstruktora dziedziczonej klasy
     this.case = case;
    }
 }
@@ -341,9 +347,9 @@ class DetectiveStation extends PoliceStation {
 
 #### Getters & Setters
 
-`get` - metoda `get` pozwala na pobranie wartości z włąściwości klasy, która jest zadeklarowana jako `private` lub `protected` oraz pozwala na manipulację wartością przed zwróceniem jej.
+`get` - metoda `get` pozwala na pobranie wartości z właściwości klasy, która jest zadeklarowana jako `private` lub `protected` oraz pozwala na manipulację wartością przed zwróceniem jej.
 
-`set` - metoda `set` pozwala na przypisanie wartości do włąściwości klasy, która jest zadeklarowana jako `private` lub `protected` oraz pozwala na manipulację wartością przed przypisaniem jej.
+`set` - metoda `set` pozwala na przypisanie wartości do właściwości klasy, która jest zadeklarowana jako `private` lub `protected` oraz pozwala na manipulację wartością przed przypisaniem jej.
 
 ```ts
 class DetectiveStation extends PoliceStation {
@@ -389,4 +395,64 @@ class DetectiveStation extends PoliceStation {
       DetectiveStation._case = value;
    }
 }
+```
+
+#### Modyfikator `abstract`
+
+Modyfikator `abstract` pozwala na zdeklarowanie klasy abstrakcyjnej która nie może być instancjonowana, ale może być dziedziczona przez inne klasy. Jeżeli klasa abstrakt zostanie odziedziczona wymusza ona na klasie dziedzicznej implementację wszystkich metod, właściwości które zostały zadeklarowane jako abstrakcyjne.
+
+Modyfikator `abstract` również pozwala na zadeklarowanie metody abstrakcyjnej, która wymusza na klasie dziedzicznej implementację tej metody.
+
+```ts
+abstract class DetectiveStation  { // Klasa DetectiveStation jest klasą abstrakcyjną
+   private static _case: string;
+ 
+   static get case() {
+      return DetectiveStation._case;
+   }
+
+   static set case(value: string) {
+      if (value.length < 3) {
+         throw new Error('Za krótki opis sprawy');
+      }
+      DetectiveStation._case = value;
+   }
+
+   abstract solveCase(): void; // metoda abstrakcyjna wymuszająca na klasie dziedzicznej implementację tej metody
+   // jak można zauważyć to metoda abstrakcyjna nie posiada ciała funkcji, tylko deklarację
+}
+
+class Detective extends DetectiveStation { //Klasa Detective dziedziczy po klasie DetectiveStation
+
+   constructor() {
+      super();
+   }
+
+   solveCase() { // implementacja metody abstrakcyjnej solveCase która jest wymuszona przez klasę abstrakcyjną DetectiveStation
+      console.log('Rozwiązanie sprawy');
+   }
+}
+```
+
+#### Singleton & Private Constructor
+
+`Singleton` jest wzorcem projektowym, który opiera się na założeniu, że klasa może mieć tylko jeden obiekt, który jest dostępny globalnie w całej aplikacji.
+
+Aby stworzyć taką klasę musimy skorzystać z modyfikatora `private` na konstruktorze klasy, co spowoduje, że konstruktor będzie jedynie dostępy z środka klasy i nie będzie dostępny z zewnątrz. Aby wywołać taki konstruktor musimy skorzystać z metody statycznej, która z zasady nie potrzeby instancji klasy do działania i ma dostęp do wewnętrznych właściwości klasy.
+
+```ts
+class Singleton {
+   private static instance: Singleton;
+
+   private constructor() {}
+
+   static getInstance() {
+      if (!Singleton.instance) {
+         Singleton.instance = new Singleton();
+      }
+      return Singleton.instance;
+   }
+}
+
+const instance = Singleton.getInstance();
 ```
