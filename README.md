@@ -33,6 +33,7 @@
       - [Modyfikator `static`](#modyfikator-static)
       - [Modyfikator `abstract`](#modyfikator-abstract)
       - [Singleton \& Private Constructor](#singleton--private-constructor)
+  - [Interfejsy](#interfejsy)
 
 ## Uruchamianie przykładów
 
@@ -455,4 +456,69 @@ class Singleton {
 }
 
 const instance = Singleton.getInstance();
+```
+
+## Interfejsy
+
+Interfejs jest bardzo podobny z zachowaniem do abstrakcyjnej klasy, chociaż różni go to, że nie implementujemy w nim żadnej logiki a tylko typy danych jakie mają być przekazane do klasy, funkcji, obiektu.
+
+Interfejsy używane są przeważnie w dwóch przypadkach:
+
+-  gdy chcemy zadeklarować typ danych, które mają być przekazane do funkcji, klasy, obiektu
+-  podczas tworzenia kontraktu dla klasy, który ma zostać zaimplementowany, coś w podobny sposób jak abstrakcyjna klasa wymusza implementację metod, właściwości.
+
+Różnica między zdeklarowaniem typów za pomocą słowa `type` oraz `interface` jest nie wielka, jedyną największą różnicą jest to, że `interface` pozwala na rozszerzenie interfejsu za pomocą mechanizmu `Declaration merging` oraz może być rozszerzony przez inny interfejs za pomocą dziedziczenia `extends`.
+
+```ts
+interface Person {
+   name: string;
+   age: number;
+}
+
+// implementacja interfejsu Person jako object type
+const person: Person = {
+   name: 'Dominik',
+   age: 25,
+};
+
+// odziedziczenie interfejsu Persona przez interfejs DetectiveType
+interface DetectiveType extends Person {
+   solveCase(): void;
+}
+
+// wymuszenie implementacji interfejsu DetectiveType w klasie Detective za pomocą słowa implements
+class Detective implements DetectiveType {
+   name: string;
+   age: number;
+
+   constructor(name: string, age: number) {
+      this.name = name;
+      this.age = age;
+   }
+
+   solveCase() {
+      console.log('Rozwiązanie sprawy');
+   }
+}
+```
+
+`Declaration merging` - jest mechanizmem nie jawnym w TS zadzieje się w momencie kiedy zdefiniujemy interfejs o tej samej nazwie, co już zdefiniowany interfejs. Wtedy TS połączy oba interfejsy w jeden.
+
+```ts
+interface Person { // bazowa deklaracja interfejsu Person
+   name: string;
+   age: number;
+}
+
+interface Person { // rozszerzenie interfejsu Person o dodatkową właściwość
+   solveCase(): void;
+}
+
+const detective: Person = {
+   name: 'Dominik',
+   age: 25,
+   solveCase() {
+      console.log('Rozwiązanie sprawy');
+   },
+};
 ```
