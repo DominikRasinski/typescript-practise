@@ -34,6 +34,8 @@
       - [Modyfikator `abstract`](#modyfikator-abstract)
       - [Singleton \& Private Constructor](#singleton--private-constructor)
   - [Interfejsy](#interfejsy)
+  - [Zaawansowane typowanie w TypeScript](#zaawansowane-typowanie-w-typescript)
+    - [Intersection Types](#intersection-types)
 
 ## Uruchamianie przykładów
 
@@ -520,5 +522,31 @@ const detective: Person = {
    solveCase() {
       console.log('Rozwiązanie sprawy');
    },
+};
+```
+## Zaawansowane typowanie w TypeScript
+
+### Intersection Types
+
+Typ `Intersection` pozwala na połączenie dwóch typów w jeden, co pozwala na wykorzystanie obu typów w jednym miejscu.
+Intersekcję typów można zrobić za pomocą znaku `&` oraz podanie dwóch typów jakie chcemy połączyć.
+
+```ts
+type Admin = {
+   name: string;
+   role: string;
+};
+
+type Detective = {
+   name: string;
+   case: string;
+};
+
+type DetectiveAdmin = Admin & Detective; 
+
+const detectiveAdmin: DetectiveAdmin = {
+   name: 'Dominik',
+   role: 'ADMIN',
+   case: 'Rozwiązanie sprawy',
 };
 ```
