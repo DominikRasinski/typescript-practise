@@ -36,6 +36,9 @@
   - [Interfejsy](#interfejsy)
   - [Zaawansowane typowanie w TypeScript](#zaawansowane-typowanie-w-typescript)
     - [Intersection Types](#intersection-types)
+    - [Discriminated Unions](#discriminated-unions)
+    - [Guard Types](#guard-types)
+      - [Guard za pomocą `instanceof`](#guard-za-pomocą-instanceof)
 
 ## Uruchamianie przykładów
 
@@ -548,5 +551,98 @@ const detectiveAdmin: DetectiveAdmin = {
    name: 'Dominik',
    role: 'ADMIN',
    case: 'Rozwiązanie sprawy',
+};
+```
+### Discriminated Unions
+
+Zasadą działa unii dyskryminacyjnej jest połączenie kilku typów, ale każdy z nich posiada unikalną wartość, która pozwala na rozróżnienie jednego typu od drugiego.
+
+```ts
+
+enum Role {INTERVENTION, K9, FBI};
+
+type Cop = {
+   type: 'cop'; // unikalna wartość dla typu
+   name: string;
+   role: string;
+};
+
+type Detective = {
+   type: 'detective'; // unikalna wartość dla typu
+   name: string;
+   case: string;
+};
+
+type User = Admin | Detective; // utworzenie unii dyskryminacyjnej
+
+const user: User = {
+   type: 'cop',
+   name: 'Dominik',
+   role: Role.INTERVENTION,
+};
+
+const checkUser = (user: User) => {
+   // dzięki unii dyskryminacyjnej możemy sprawdzić jaki typ danych jest przekazany
+   // i wykonać odpowiednią akcję
+   if (user.type === 'cop') {
+      console.log('To jest policjant');
+   } else {
+      console.log('To jest detektyw');
+   }
+};
+
+```
+### Guard Types
+
+Typ `Guard` pozwala na sprawdzenie typu danych, które są przekazywane do funkcji, klasy, obiektu. Guard pozwala na sprawdzenie typu danych i zwrócenie wartości `true` lub `false` w zależności od tego czy typ danych jest zgodny z oczekiwanym.
+
+Za pomocą operatora `is` oraz `user is Cop` możemy sprawdzić czy przekazane dane są zgodne z oczekiwanym typem.
+
+```ts
+// funkcja sprawdzająca czy przekazane dane są zgodne z typem Cop
+const isCop = (user: User): user is Cop => {
+   return user.type === 'cop';
+};
+
+const checkUser = (user: User) => {
+   if (isCop(user)) {
+      console.log('To jest policjant');
+   } else {
+      console.log('To jest detektyw');
+   }
+};
+```
+
+#### Guard za pomocą `instanceof`
+
+Guard za pomocą `instanceof` pozwala na sprawdzenie czy przekazane dane są instancją klasy.
+
+```ts
+class Cop {
+   name: string;
+   role: string;
+
+   constructor(name: string, role: string) {
+      this.name = name;
+      this.role = role;
+   }
+}
+
+class Detective {
+   name: string;
+   case: string;
+
+   constructor(name: string, case: string) {
+      this.name = name;
+      this.case = case;
+   }
+}
+
+const checkUser = (user: Cop | Detective) => {
+   if (user instanceof Cop) { // sprawdzenie czy przekazane dane są instancją klasy Cop
+      console.log('To jest policjant');
+   } else {
+      console.log('To jest detektyw');
+   }
 };
 ```
