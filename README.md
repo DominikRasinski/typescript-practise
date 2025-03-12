@@ -39,9 +39,13 @@
     - [Discriminated Unions](#discriminated-unions)
     - [Guard Types](#guard-types)
       - [Guard za pomocą `instanceof`](#guard-za-pomocą-instanceof)
+  - [Function overloads](#function-overloads)
+  - [Index types](#index-types)
+  - [Rzutowanie na typ `const`](#rzutowanie-na-typ-const)
   - [Generics Type](#generics-type)
     - [Wiele typów generycznych](#wiele-typów-generycznych)
     - [Ograniczanie typów generycznych](#ograniczanie-typów-generycznych)
+>>>>>>> 052fb65366d873c054bbccc6150419b68b5c1d1d
 
 ## Uruchamianie przykładów
 
@@ -648,6 +652,54 @@ const checkUser = (user: Cop | Detective) => {
       console.log('To jest detektyw');
    }
 };
+```
+
+## Function overloads
+
+Funkcje w TS mogą być "przeciążane" co pozwala na zdefiniowanie kilku możliwości jakie dane mogą zostać zwrócone na podstawie przekazanych parametrów do funkcji.
+
+```ts
+// deklaracja przeciążenia dla funkcji add na podstawie jaki typ danych zostanie przekazany
+function add(a: number, b: number): number; // deklaracja funkcji add z dwoma parametrami typu number i zwracająca wartość typu number
+function add(a: string, b: string): string; // deklaracja funkcji add z dwoma parametrami typu string i zwracająca wartość typu string 
+
+function add(a: number | string, b: number | string) { // implementacja funkcji add z dwoma parametrami typu number lub string i zwracająca wartość typu number lub string
+   if (typeof a === 'number' && typeof b === 'number') {
+      return a + b;
+   }
+   return a.toString() + b.toString();
+}
+
+add(1, 2); // 3
+add('1', '2'); // '12'
+```
+
+## Index types
+
+Index types pozwalają na dynamiczne zdeponowanie typów danych jakie mogą być przekazane do obiektu, klasy. Pozwala to rozszerzać obiekt dynamicznie o nowe właściwości o ile takie będą się zgadać z typem danych zdefiniowanym w index types.
+
+```ts
+interface ErrorContainer {
+   [prop: string]: string; // index types pozwala na dynamiczne dodawanie nowych właściwości do obiektu
+}
+
+const errorBag: ErrorContainer = {
+   email: 'Niepoprawny email',
+   username: 'Nazwa użytkownika jest za krótka',
+};
+```
+
+## Rzutowanie na typ `const`
+
+Rzutowanie na typ `const` pozwala na zdefiniowanie stałej wartości, która nie może być zmieniona w trakcie działania aplikacji. Taka wartość/zmienna przyjmuje typ `readonly` który nie pozwala na jakiekolwiek mutacje, nawet na tablicy nie możemy wykorzystać metody `push()` bo zwróci błąd, nie tylko taka metoda ale wszystkie metody, które mutują wartość tablicy.
+
+Aby dokonać rzutowania na typ `const` należy dodać na koniec deklaracji zmiennej `as const`.
+
+```ts
+const names: string[] = ['Dominik', 'Tomek', 'Mateusz'] as const; // rzutowanie na typ const
+
+// próba modyfikacji wartości tablicy names
+names.push('Andrzej'); // błąd
 ```
 
 ## Generics Type
