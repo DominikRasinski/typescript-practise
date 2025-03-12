@@ -39,6 +39,9 @@
     - [Discriminated Unions](#discriminated-unions)
     - [Guard Types](#guard-types)
       - [Guard za pomocą `instanceof`](#guard-za-pomocą-instanceof)
+  - [Generics Type](#generics-type)
+    - [Wiele typów generycznych](#wiele-typów-generycznych)
+    - [Ograniczanie typów generycznych](#ograniczanie-typów-generycznych)
 
 ## Uruchamianie przykładów
 
@@ -573,7 +576,7 @@ type Detective = {
    case: string;
 };
 
-type User = Admin | Detective; // utworzenie unii dyskryminacyjnej
+type User = Cop | Detective; // utworzenie unii dyskryminacyjnej
 
 const user: User = {
    type: 'cop',
@@ -645,4 +648,46 @@ const checkUser = (user: Cop | Detective) => {
       console.log('To jest detektyw');
    }
 };
+```
+
+## Generics Type
+
+Typy generyczne są dosyć często wykorzystywane w TS ponieważ pozwalają na tworzenie uniwersalnych funkcji, klas, obiektów, które mogą przyjmować różne typy danych.
+
+Typ generyczny deklarujemy za pomocą znaku `<>` oraz podania wewnątrz znaków `template` pozwalający na zdefiniowanie dowolnego typu danych jakie chcemy obsłużyć. `Template` typu jakiego chcemy użyć zazwyczaj oznaczamy dużą literą `T` ale możemy użyć jaki dowolnej litery, słowa.
+
+Typy generyczne nie są ograniczone tylko do jednego typu możemy po przecinku dodać większą ilość typów jakie chcemy obsłużyć.
+
+```ts
+const identity = <T>(arg: T): T => {
+   return arg;
+};
+
+identity('Dominik'); // zwróci string
+identity(25); // zwróci number
+```
+
+### Wiele typów generycznych
+
+Typy generyczne mogą również tworzyć bardziej skomplikowane zależności jak na przykład funkcja przyjmująca nie tylko jeden typ danych ale również wiele różnych typów danych.
+
+```ts
+
+const merge = <T, U>(obj1: T, obj2: U): T & U => {
+   return { ...obj1, ...obj2 };
+};
+
+const mergedObj = merge({ name: 'Dominik' }, { age: 25 });
+
+```
+### Ograniczanie typów generycznych
+
+Typy generyczne używane jako `template` mogą przyjmować dowolne typy danych, co w niektórych przypadkach może prowadzić do błędów, dlatego warto ograniczyć typy generyczne do konkretnych typów danych. Aby ograniczyć generyczne typy danych musimy skorzystać z operatora `extends` oraz podania typu danych jakie chcemy obsłużyć.
+
+```ts
+const merge = <T extends object, U extends object>(obj1: T, obj2: U): T & U => {
+   return { ...obj1, ...obj2 };
+};
+
+const mergedObj = merge({ name: 'Dominik' }, { age: 25 });
 ```
