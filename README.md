@@ -45,7 +45,6 @@
   - [Generics Type](#generics-type)
     - [Wiele typów generycznych](#wiele-typów-generycznych)
     - [Ograniczanie typów generycznych](#ograniczanie-typów-generycznych)
->>>>>>> 052fb65366d873c054bbccc6150419b68b5c1d1d
 
 ## Uruchamianie przykładów
 
