@@ -48,6 +48,7 @@
   - [Typeof \& keyof](#typeof--keyof)
     - [Operator `typeof`](#operator-typeof)
     - [Operator `keyof`](#operator-keyof)
+  - [Indexed Access Types](#indexed-access-types)
 
 ## Uruchamianie przykładów
 
@@ -782,3 +783,33 @@ type Person = keyof typeof person; // pobranie kluczy jakie znajdują się w obi
 
 const key: Person = 'name'; // przypisanie klucza do zmiennej key
 ```
+
+## Indexed Access Types
+
+Indexed Access Types pozwala na dostęp do wartości w elemencie policzalnym jak obiekt, tablica.
+
+```ts 
+interface Person {
+   name: string;
+   age: number;
+   job: string;
+   permission: {
+      read: boolean;
+      write: boolean;
+   }[]
+}
+```
+Dostęp do wartości `permission` z obiektu `Person` ale typ nadal będzie kolekcją
+
+```ts
+type Permission = Person['permission']; // pobranie wartości z tablicy permission
+
+```
+
+Aby zawęzić typ danych do pojedynczego typu możemy skorzystać z indeksu `number` w tablicy `permission`
+
+```ts
+type Perm = Permission[number]; // pobranie wartości z tablicy permission
+```
+
+Typ `Perm` przyjmie teraz wartości z tablicy permission. Za pomocą podania w tablicy indeksu `number` możemy zwrócić indeksy jakie znajdują się w tablicy permission.
