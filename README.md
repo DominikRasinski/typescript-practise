@@ -45,6 +45,9 @@
   - [Generics Type](#generics-type)
     - [Wiele typów generycznych](#wiele-typów-generycznych)
     - [Ograniczanie typów generycznych](#ograniczanie-typów-generycznych)
+  - [Typeof \& keyof](#typeof--keyof)
+    - [Operator `typeof`](#operator-typeof)
+    - [Operator `keyof`](#operator-keyof)
 
 ## Uruchamianie przykładów
 
@@ -741,4 +744,41 @@ const merge = <T extends object, U extends object>(obj1: T, obj2: U): T & U => {
 };
 
 const mergedObj = merge({ name: 'Dominik' }, { age: 25 });
+```
+
+## Typeof & keyof
+
+### Operator `typeof`
+Operator `typeof` pozwala na sprawdzenie typu danych jakie są przekazane do funkcji, klasy, obiektu.
+
+W TS `typeof` posiada dodatkowe możliwości niż tylko sprawdzanie typów danych jakie zostały przekazane do zmiennej itp... operator `typeof` pozwala na szybkie przypisanie typu danych do typu danych na którym będziemy operować w funkcji, obiekcie, klasie.
+
+```ts
+
+const person = {
+   name: 'Dominik',
+   age: 25,
+};
+
+type Person = typeof person; // przypisanie typu danych z obiektu person do zmiennej Person
+
+const anotherPerson: Person = {
+   name: 'Tomek',
+   age: 30,
+};
+
+```
+
+### Operator `keyof`
+Operator `keyof` pozwala na pobranie kluczy jakie znajdują się w obiekcie, klasie.
+
+```ts
+const person = {
+   name: 'Dominik',
+   age: 25,
+};
+
+type Person = keyof typeof person; // pobranie kluczy jakie znajdują się w obiekcie person
+
+const key: Person = 'name'; // przypisanie klucza do zmiennej key
 ```
