@@ -49,6 +49,11 @@
     - [Operator `typeof`](#operator-typeof)
     - [Operator `keyof`](#operator-keyof)
   - [Indexed Access Types](#indexed-access-types)
+  - [Mapped Types](#mapped-types)
+  - [Template literal types](#template-literal-types)
+  - [Infer keyword](#infer-keyword)
+  - [Conditional Types](#conditional-types)
+  - [Utility types](#utility-types)
 
 ## Uruchamianie przykładów
 
@@ -813,3 +818,77 @@ type Perm = Permission[number]; // pobranie wartości z tablicy permission
 ```
 
 Typ `Perm` przyjmie teraz wartości z tablicy permission. Za pomocą podania w tablicy indeksu `number` możemy zwrócić indeksy jakie znajdują się w tablicy permission.
+
+
+## Mapped Types
+
+Typy `mapped` pozwalają na dynamiczne tworzenie nowych typów danych na podstawie już istniejących, poprzez mapowanie typów jakie zanajdują się już w istniejących zbiorach typów `type` | `interface`.
+
+```ts
+// Przygotowanie bazowego typu danych
+type Android = {
+   name: string;
+   protocol: string;
+   weapon: string;
+}
+
+// Mapowanie typu bazowego, oraz dodanie modyfikatora readonly
+type AndroidReadOnly = {
+   readonly [P in keyof Android]: string;
+}
+
+// Stworzenie nowego typu danych na podstawie typu bazowego, ale zmodyfikowanie go
+// aby wszystkie własności typu bazowego były opcjonalne
+type AndroidPartial = {
+   [P in keyof Android]?: string;
+}
+
+const Eve: AndroidReadOnly = {
+   name: 'Eve',
+   protocol: 'EVE',
+   weapon: 'Blade'
+}
+
+const Adam: AndroidPartial = {
+   name: 'Adam',
+   protocol: 'ADAM',
+}
+
+```
+
+## Template literal types
+
+Typy na podstawie template literal przyspieszają tworzenie typów danych, które są tworzenie na uniach typów i muszą posiadać wariacje wartości tych unii typów.
+
+```ts
+type WritePermission = 'WRITE' | 'NO_WRITE';
+type ReadPermission = 'READ' | 'NO_READ';
+
+type Permission = `${WritePermission}-${ReadPermission}`; // stworzenie typu danych na podstawie template literal
+```
+
+## Infer keyword
+
+Słowo kluczowe `infer` pozwala na wydostanie typu danych z innego typu danych, co pozwala na dynamiczne tworzenie typów danych na podstawie innych typów danych.
+
+```ts
+type ExtractType<T> = T extends { name: infer U } ? U : never; // infer pozwala na wydostanie typu danych z innego typu danych
+
+type NameType = ExtractType<{ name: string }>; // zwróci string
+```
+
+## Conditional Types
+
+Typy warunkowe pozwalają na dynamiczne tworzenie typów danych na podstawie warunków jakie są spełnione.
+
+```ts
+type CheckType<T> = T extends string ? 'String' : 'Not string'; // stworzenie typu danych na podstawie warunku
+
+type StringType = CheckType<string>; // zwróci 'String'
+type NumberType = CheckType<number>; // zwróci 'Not string'
+```
+
+## Utility types
+
+W TS nie musimy tworzyć typów danych od zera, ponieważ TS dostarcza nam gotowe typy danych, które możemy wykorzystać w naszych aplikacjach.
+📚 https://www.typescriptlang.org/docs/handbook/utility-types.html
