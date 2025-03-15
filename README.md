@@ -869,7 +869,7 @@ type Permission = `${WritePermission}-${ReadPermission}`; // stworzenie typu dan
 
 ## Infer keyword
 
-Słowo kluczowe `infer` pozwala na wydostanie typu danych z innego typu danych, co pozwala na dynamiczne tworzenie typów danych na podstawie innych typów danych.
+Słowo kluczowe `infer` pozwala na wydobycie zagnieżdżonych typów danych wewnątrz innego typu, co pozwala na dynamiczne tworzenie typów danych na podstawie innych typów.
 
 ```ts
 type ExtractType<T> = T extends { name: infer U } ? U : never; // infer pozwala na wydostanie typu danych z innego typu danych
