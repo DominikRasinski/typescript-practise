@@ -950,17 +950,13 @@ Podczas modyfikowania klasy, dekorator musi zwrócić nową anonimową klasę na
 
 function corruption<T extends new (...args: any[]) => any>(target: T, ctx: ClassDecoratorContext) {
    return class extends target { // zwrocenie anonimowej klasy na podstawie klasy przekazanej pod parametrem target
-      corruption: "corrupted"
-
-      status() {
-         console.log(`${this.name} status is ${this.corruption}`);
-      }
+      corruption = "corrupted"
    }
 }
 
 @corruption
 class Android {
-   name: "Tachy"
+   name = "Tachy"
 }
 
 ```
