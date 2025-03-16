@@ -54,6 +54,8 @@
   - [Infer keyword](#infer-keyword)
   - [Conditional Types](#conditional-types)
   - [Utility types](#utility-types)
+  - [Dekorator](#dekorator)
+    - [EcmaScript Decorators](#ecmascript-decorators)
 
 ## Uruchamianie przykładów
 
@@ -892,3 +894,73 @@ type NumberType = CheckType<number>; // zwróci 'Not string'
 
 W TS nie musimy tworzyć typów danych od zera, ponieważ TS dostarcza nam gotowe typy danych, które możemy wykorzystać w naszych aplikacjach.
 📚 https://www.typescriptlang.org/docs/handbook/utility-types.html
+
+## Dekorator
+
+`Dekorator` to specjalny kawałek kodu który współpracuje z kodem mu przekazanym, ale ma wpływ na jego działanie. Dekoratory są używane w TS do modyfikacji klas, metod, właściwości, obiektów **ale jedynie mogą być obsłużone przez klasy bo są częścią OOP**
+
+Dekoratory w TS są rozróżniane na dwa gatunki:
+1. `EcmaScript Decorators` - dekoratory wspierane, przez EcmaScript oraz możliwe do wykorzystania w JS jak zostaną dodane.
+2. `Experimental Decorators` - legacy dekoratory, nie mogą działać bez TS.
+
+### EcmaScript Decorators
+
+Dekoratory `EcmaScript` oczekują co najmniej dwóch parametrów aby funkcjonować prawidłowo. Aby stworzyć dekorator musimy najpierw stowrzyć funkcję która będzie przyjmować parametr `target` którym będzie klasa do której dekorator zostanie dodany oraz parametr context `ctx` którego typ jest specjalnie dostarczany przez TS `ClassDecoratorContext`
+
+**Użycie:**
+
+Prosty dekorator zwracający informacje o klasie
+
+```ts
+function logClass(target: any, ctx: ClassDecoratorContext) {
+   console.log(target); // zwroci nam target jako klase Android
+   console.log(ctx); // zwroci nam context całej klasy
+}
+
+@logClass // wykorzystanie dekoratora na klasie Android
+class Android {
+   name: string;
+   protocol: string;
+   weapon: string;
+
+   constructor(name: string, protocol: string, weapon: string) {
+      this.name = name;
+      this.protocol = protocol;
+      this.weapon = weapon;
+   }
+}
+```
+> Dekorator uruchomi się w momencie kompilacji kodu, nawet bez wywołania oraz instancjonowania klasy
+
+---
+
+Dekorator zwracający zmodyfikowaną klasę.
+Aby korzystać z dekoratora który modyfikuję klasę, musimy skorzystać typu generycznego dla parametru `target`, który zawęzimy tylko do obsługi klas.
+
+```ts
+<T extend new (...args: any[]) => any> // typ dla parametru target: T
+```
+> Specjalny zapis typu generycznego mówiący, że oczekujemy tylko i wyłącznie typu Class
+> Skorzystanie z konstruktora `new` przed zapisem funkcyjnym `() => any` mówi TS, że oczekujemy parametru typu klas
+> Parametry `...args: any[]` mówią, że przyjmujemy dowolną liczbę parametrów dowolnego typu
+
+Podczas modyfikowania klasy, dekorator musi zwrócić nową anonimową klasę na postawie klasy jaką przyjmie
+
+```ts
+
+function corruption<T extends new (...args: any[]) => any>(target: T, ctx: ClassDecoratorContext) {
+   return class extends target { // zwrocenie anonimowej klasy na podstawie klasy przekazanej pod parametrem target
+      corruption: "corrupted"
+
+      status() {
+         console.log(`${this.name} status is ${this.corruption}`);
+      }
+   }
+}
+
+@corruption
+class Android {
+   name: "Tachy"
+}
+
+```
