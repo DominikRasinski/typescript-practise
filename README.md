@@ -56,6 +56,10 @@
   - [Utility types](#utility-types)
   - [Dekorator](#dekorator)
     - [EcmaScript Decorators](#ecmascript-decorators)
+    - [Experimental Decorators](#experimental-decorators)
+  - [ES Modules \& Namespace](#es-modules--namespace)
+    - [Namespace](#namespace)
+    - [ES Modules](#es-modules)
 
 ## Uruchamianie przykładów
 
@@ -960,3 +964,71 @@ class Android {
 }
 
 ```
+
+### Experimental Decorators
+
+Na razie temat Dekoratorów eksperymentalnych pozostawiam, bez większego zagnieżdżenia się w nie, ponieważ są wskazywane jako `LEGACY`.
+Chociaż pewnie się zajmę tym tematem w wolnej chwili, a póki co pozostawiam tylko link do tematu w dokumentacji TS
+
+> Aby skorzystać z `Experimental Decorators` musimy najpierw postawić projekt korzystając z komendy `ts --init`, dzięki temu będziemy posiadać
+> plik `tsconfig.json` w nim musimy odnaleźć flagę i od komentować ją, dzięki temu projekt będzie mógł korzystać z legacy dekoratorów
+> `   // "experimentalDecorators": true,` - jeżeli flaga pozostanie za komentowana to kompilator będzie rzucać błąd składni
+
+📚 https://devblogs.microsoft.com/typescript/announcing-typescript-5-0/#differences-with-experimental-legacy-decorators
+📚 https://www.typescriptlang.org/docs/handbook/decorators.html
+
+## ES Modules & Namespace
+
+### Namespace
+
+`Namespace` jest to jedna z technik pozwalająca na organizowanie kodu, `namespace` pozwala na wyciągnięcie kodu do innych plików do których możemy tworzyć odwołania.
+
+Aby skorzystać z tego sposobu musimy dany kawałek kodu wyciągnąć do innego pliku o oznaczyć go jako `namespace`:
+
+> `Namespace` natywnie działa tylko w `TS` jeżeli chcemy również działał w projektach korzystających z `JS` musimy wykonać poniższe operacje, aby kompilator tworzył boundle.js
+> Aby korzystać z `namespace` musimy w pliku `tsconfig.json` poustawiać flagi
+> `"module": "none", "outFile": "./dist/output.js"` - module może być wymagane wskazanie odpowiedniego sposobu
+> takiego jak `amd` lub inny.
+
+```ts
+
+// =========== START Plik validation.ts =========
+namespace ValidInterfaces {
+   export interface validEmail {
+      email: string;
+      checkEmail(email: string): boolean;
+   }
+
+   export interface validLogin {
+      login: string;
+      checkLogin(login: string): boolean;
+   }
+}
+// =========== END Plik validation.ts =========
+
+// specjalny zapis pozwalajacy na odniesienie sie do namespace w TS
+// w zapisie musza zostac zawarte trzy znaki slash oraz tag otwierajacy i zamykajacy
+/// <reference path="validation.ts" /> 
+
+class EmailValidator implements ValidInterfaces.validEmail {
+   email: string;
+
+   constructor(email: string) {
+      this.email = email;
+   }
+
+   checkEmail(email: string) {
+      if(email) {
+         return email.includes("@");
+      }
+      return false;
+   }
+}
+
+```
+
+Wadą korzystania z `namespace` jest to, że nie `TS` nie ma pojęcia czy referowany plik dalej istnieje, lub został zmieniony, w taki sposób, że oczekiwana zawartość pliku już nie istnieje.
+
+Dlatego lepszym pomysłem jest korzystanie z `ES Modules`.
+
+### ES Modules
