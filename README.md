@@ -65,7 +65,6 @@
   - [ES Modules \& Namespace](#es-modules--namespace)
     - [Namespace](#namespace)
     - [ES Modules](#es-modules)
->>>>>>> 59f3351af24f1240ce12692ac3e45d6648273c2b
 
 ## Uruchamianie przykładów
 
