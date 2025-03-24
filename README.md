@@ -1106,3 +1106,59 @@ Wadą korzystania z `namespace` jest to, że nie `TS` nie ma pojęcia czy refero
 Dlatego lepszym pomysłem jest korzystanie z `ES Modules`.
 
 ### ES Modules
+
+ES Modules są bardziej wspierane oraz szerzej wykorzystywane ze względu na to, że dostaniemy informacje kiedy na przykład plik na którym opieramy naszą aplikację przestanie istnieć albo przestanie udostępniać nam wskazany element.
+
+```ts
+// =========== START Plik validation.ts =========
+// Eksportujemy interfejsy zamiast umieszczać je w namespace
+export interface ValidEmail {
+  email: string;
+  checkEmail(email: string): boolean;
+}
+
+export interface ValidLogin {
+  login: string;
+  checkLogin(login: string): boolean;
+}
+// =========== END Plik validation.ts =========
+
+// =========== START Plik email-validator.ts =========
+// Importujemy interfejs z pliku validation
+import { ValidEmail } from './validation';
+
+// Implementujemy interfejs w klasie
+export class EmailValidator implements ValidEmail {
+  email: string;
+
+  constructor(email: string) {
+    this.email = email;
+  }
+
+  checkEmail(email: string) {
+    if(email) {
+      return email.includes("@");
+    }
+    return false;
+  }
+}
+// =========== END Plik email-validator.ts =========
+
+// =========== START Plik app.ts =========
+// Importujemy klasę EmailValidator
+import { EmailValidator } from './email-validator';
+
+// Użycie zaimportowanej klasy
+const validator = new EmailValidator('test@example.com');
+console.log(validator.checkEmail('invalid-email')); // false
+console.log(validator.checkEmail('valid@email.com')); // true
+// =========== END Plik app.ts =========
+```
+
+Zalety używania ES Modules:
+- Lepsza obsługa błędów - kompilator zgłosi błąd jeśli importowany moduł nie istnieje
+- Lepsza integracja z nowoczesnym ekosystemem JavaScript
+- Lepsza obsługa w narzędziach deweloperskich i edytorach kodu
+- Możliwość korzystania z tree-shaking (usuwanie nieużywanego kodu podczas bundlowania)
+- Bardziej przejrzysta struktura zależności między plikami
+
