@@ -56,10 +56,16 @@
   - [Utility types](#utility-types)
   - [Dekorator](#dekorator)
     - [EcmaScript Decorators](#ecmascript-decorators)
+      - [Class Decorator](#class-decorator)
+        - [Dekorator zwracający zmodyfikowaną klasę.](#dekorator-zwracający-zmodyfikowaną-klasę)
+      - [Method Decorator](#method-decorator)
+        - [Dekorator modyfikujący metodę](#dekorator-modyfikujący-metodę)
+    - [Field Decorator](#field-decorator)
     - [Experimental Decorators](#experimental-decorators)
   - [ES Modules \& Namespace](#es-modules--namespace)
     - [Namespace](#namespace)
     - [ES Modules](#es-modules)
+>>>>>>> 59f3351af24f1240ce12692ac3e45d6648273c2b
 
 ## Uruchamianie przykładów
 
@@ -911,6 +917,10 @@ Dekoratory w TS są rozróżniane na dwa gatunki:
 
 Dekoratory `EcmaScript` oczekują co najmniej dwóch parametrów aby funkcjonować prawidłowo. Aby stworzyć dekorator musimy najpierw stowrzyć funkcję która będzie przyjmować parametr `target` którym będzie klasa do której dekorator zostanie dodany oraz parametr context `ctx` którego typ jest specjalnie dostarczany przez TS `ClassDecoratorContext`
 
+Dekoratory mogą być dodane do `klas`, `metod`, `właściwości`, `obiektów`, `setterów`, `getterów`.
+
+#### Class Decorator
+
 **Użycie:**
 
 Prosty dekorator zwracający informacje o klasie
@@ -938,7 +948,7 @@ class Android {
 
 ---
 
-Dekorator zwracający zmodyfikowaną klasę.
+##### Dekorator zwracający zmodyfikowaną klasę.
 Aby korzystać z dekoratora który modyfikuję klasę, musimy skorzystać typu generycznego dla parametru `target`, który zawęzimy tylko do obsługi klas.
 
 ```ts
@@ -963,6 +973,71 @@ class Android {
    name = "Tachy"
 }
 
+```
+---
+
+#### Method Decorator
+
+Dekoratory dodawane do metod, pozwalają na modyfikację działania metody, dodanie nowych funkcjonalności, zmiany w działaniu metody.
+
+```ts
+function logMethod(target: Function, ctx: ClassMethodDecoratorContext) {
+   console.log(target);
+}
+
+class Android {
+   name = "Lily";
+
+   @logMethod //dekorator dla metody
+   attack() {
+      console.log('Atak');
+   }
+}
+
+```
+---
+
+##### Dekorator modyfikujący metodę
+
+```ts
+function replace(target: Function, ctx: ClassMethodDecoratorContext) {
+   return function(this: any) {
+      target.apply(this) // target jest wykonaniem oginalnej metody jaka zoststala przekazana do dekoratora
+   }
+}
+
+class Android {
+   name = "Lily";
+
+   @replace
+   greet() {
+      console.log(this.name)
+   }
+}
+
+```
+
+### Field Decorator
+
+Dekoratory dodawna do właściwości umozliwiają modyfikację danego pola.
+
+`target` w dekoratorze pola musi być ustawiony na typ `undefiend` ze względu na to, że dekorator zostanie wykonany przed inicjalizacją pola w klasie
+
+```ts
+function fieldLogger(target: undefined, ctx: ClassFieldDecoratorContext) {
+   return (initialValue: any) => {
+      return '';
+   }
+}
+
+class Android {
+   @fieldLogger
+   name = "Lily";
+
+   greet() {
+      console.log(this.name)
+   }
+}
 ```
 
 ### Experimental Decorators
