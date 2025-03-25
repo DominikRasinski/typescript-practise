@@ -65,6 +65,7 @@
   - [ES Modules \& Namespace](#es-modules--namespace)
     - [Namespace](#namespace)
     - [ES Modules](#es-modules)
+  - [WebPack](#webpack)
 
 ## Uruchamianie przykładów
 
@@ -1162,3 +1163,13 @@ Zalety używania ES Modules:
 - Możliwość korzystania z tree-shaking (usuwanie nieużywanego kodu podczas bundlowania)
 - Bardziej przejrzysta struktura zależności między plikami
 
+## WebPack
+
+Jest to narzędzie, które pozwala na zoptymalizowanie kodu strony.
+Optymalizacja polega na stworzeniu zminimalizowanego kodu, łącząc go w jeden duży plik boundle, plik nie jest za bardzo czytelny dla człowieka ponieważ nie posiada żadnej stylizacji, ani pustych znaków ułatwiających analizę.
+
+Dużo informacji można znaleźć na oficjalnej stronie rozwiązania:
+
+📚 https://webpack.js.org/
+
+Aktualnie odchodzi się od powszechnego użycia tej technologii na rzecz bardziej zoptymalizowanych rozwiązań takich jak NextJS.
